@@ -22,10 +22,21 @@ public class Tarefa implements Serializable{
 		
 	}
 	
-	public Tarefa(Long id, String titulo) {
+	public Tarefa(Long id, String titulo, String descricao, Usuario usuario, NivelPrioridade nivelPrioridade,
+			Date deadline, Date dataCadastro, Date dataModicicacao) {
+		super();
 		this.id = id;
+		this.titulo = titulo;
+		this.descricao = descricao;
+		this.usuario = usuario;
+		this.nivelPrioridade = nivelPrioridade;
+		this.deadline = deadline;
+		this.dataCadastro = dataCadastro;
+		this.dataModicicacao = dataModicicacao;
 	}
-	
+
+
+
 	@Id
 	@Column(name = "idTask")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -119,7 +130,9 @@ public class Tarefa implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Task [id=" + id + "]";
+		return "Tarefa [id=" + id + ", titulo=" + titulo + ", descricao=" + descricao + ", usuario=" + usuario
+				+ ", nivelPrioridade=" + nivelPrioridade + ", deadline=" + deadline + ", dataCadastro=" + dataCadastro
+				+ ", dataModicicacao=" + dataModicicacao + "]";
 	}
 
 	@Override

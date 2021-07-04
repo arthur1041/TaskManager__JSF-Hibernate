@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<h:head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Document</title>
+</h:head>
+<h:body>
+	<h:form>
+		Nome: 
+		<h:inputText value="#{usuarioMbean.usuario.nome}"/>
+		<br/>
+		Sobrenome: 
+		<h:inputText value="#{usuarioMbean.usuario.sobrenome}"/>
+		<br/>
+		CPF:
+		<h:inputText value="#{usuarioMbean.usuario.cpf}" />
+		<br/>
+		Data de nascimento:
+		<h:inputText value="#{usuarioMbean.dataNascimento}" />
+		
+		<h:commandButton value="Cadastrar" action="#{usuarioMbean.cadastrar}" />
+	</h:form>
+</h:body>
+</html>
