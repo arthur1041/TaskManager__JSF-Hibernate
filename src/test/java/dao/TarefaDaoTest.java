@@ -58,9 +58,20 @@ public class TarefaDaoTest {
 		tarefaDao.delete(1l);
 	}
 	
-	@Test
+//	@Test
 	public void testFindById() {
 		System.out.println(tarefaDao.findAll());
+	}
+	
+	@Test
+	public void testFilter() {
+		TarefaDao tarefaDao = (TarefaDao) this.tarefaDao;
+		
+		List<Tarefa> tarefas = tarefaDao.filter(0l, "t", 0l, true);
+		
+		for (Tarefa tarefa : tarefas) {
+			System.out.println(tarefa);
+		}
 	}
 
 }

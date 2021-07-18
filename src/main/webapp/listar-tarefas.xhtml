@@ -8,7 +8,7 @@
 	<meta charset="UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Cadastrar tarefa</title>
+	<title>Atualizar</title>
 	<link
 		href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
 		rel="stylesheet"
@@ -42,60 +42,85 @@
 		</nav>
 	</header>
 	<div class="container pt-5">
-		<c:if test="${not empty usuarioMbean.mensagensErro}">
-			<ui:repeat var="mensagem" value="#{usuarioMbean.mensagensErro}">
-				<div class="alert alert-danger" role="alert">
-					<h:outputText value="#{mensagem}" />
-				</div>
-			</ui:repeat>
-		</c:if>
-		<h3>Cadastrar novo resposável para uso</h3>
+	<h3>Listagem de tarefas</h3>
 		<h:form>
 			<div class="row">
-				<div class="col-8">
+				<div class="col-4">
 					<div class="mb-3">
-						<label for="input-nome" class="form-label">Nome:</label>
-						<h:inputText id="input-nome" styleClass="form-control" value="#{usuarioMbean.usuario.nome}" />
+						<label for="input-numero" class="form-label">Número:</label>
+						<h:inputText id="input-numero"
+							value="#{tarefaMbean.tarefa.id}" styleClass="form-control" />
 					</div>
 				</div>
 			</div>
 
 			<div class="row">
-				<div class="col-8">
-					<div class="mb-3">
-						<label for="input-sobrenome" class="form-label">Sobrenome:</label>
-						<h:inputText id="input-sobrenome" styleClass="form-control"
-							value="#{usuarioMbean.usuario.sobrenome}" />
-					</div>
+			<div class="col-8">
+				<div class="mb-3">
+					<label for="input-titulo" class="form-label">Título:</label> 
+					<h:inputText id="input-titulo" value="#{tarefaMbean.tarefa.titulo}" styleClass="form-control" />
+				</div>
 				</div>
 			</div>
+			
 			<div class="row">
-				<div class="col-8">
+				<div class="col-4">
 					<div class="mb-3">
-						<label for="input-cpf" class="form-label">CPF:</label>
-						<h:inputText id="input-cpf" styleClass="form-control" value="#{usuarioMbean.usuario.cpf}" />
+						<label for="input-responsavel" class="form-label">Responsável:</label> 
+						<h:selectOneMenu id="input-responsavel" styleClass="form-control" value="#{tarefaMbean.tarefa.usuario.id}">
+							<f:selectItem itemLabel="Qualquer"/>
+							<f:selectItems value="#{usuarioMbean.listaUsuarios}" var="usuario" itemLabel="#{usuario.nome}" itemValue="#{usuario.id}" />
+						</h:selectOneMenu>
 					</div>
 				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-8">
+			
+				<div class="col-4">
 					<div class="mb-3">
-						<label for="input-nasc" class="form-label">Data de
-							nascimento:</label>
-						<h:inputText id="input-nasc" styleClass="form-control format-date"
-							value="#{usuarioMbean.dataNascimento}" maxlength="10" />
+						<label for="input-situacao" class="form-label">Status:</label> 
+						<h:selectOneMenu id="input-situacao" styleClass="form-control" value="#{tarefaMbean.tarefa.emAndamento}">
+							<f:selectItem itemLabel="Qualquer"/>
+							<f:selectItem itemValue="false"  itemLabel="Concluída"/>
+							<f:selectItem itemValue="true" itemLabel="Em andamento"/>
+						</h:selectOneMenu>
 					</div>
 				</div>
+				
+				<div class="col-2">
+					<h:commandButton value="Buscar tarefas" action="#{tarefaMbean.filtrarTarefas}" />
+				</div>
 			</div>
-			<h:commandButton value="Cadastrar" action="#{usuarioMbean.cadastrar}" />
+			
 
+			<table class="table mt-5">
+				<thead class="table-dark">
+					<th>Número</th>
+					<th>Título</th>
+					<th>Responsável</th>
+					<th>Ações</th>
+				</thead>
+				<tbody>
+					<ui:repeat var="tarefa" value="#{tarefaMbean.tarefasFiltradas}">
+						<tr>
+							<td><h:outputText value="#{tarefa.id}" /></td>
+							<td><h:outputText value="#{tarefa.titulo}" /></td>
+							<td><h:outputText value="#{tarefa.usuario.nome}" /></td>
+							<td><h:commandButton value="Atualizar"
+									styleClass="btn btn-warning ms-1 me-1"
+									action="#{tarefaMbean.editar(tarefa.id)}" /> <h:commandButton
+									value="Apagar" styleClass="btn btn-danger ms-1 me-1"
+									action="#{tarefaMbean.apagar(tarefa.id)}" />
+									<h:commandButton value="Concluir"
+									styleClass="btn btn-success ms-1 me-1"
+									action="#{tarefaMbean.defineStatus(tarefa.id)}" /></td>
+						</tr>
+					</ui:repeat>
+				</tbody>
+			</table>
 		</h:form>
 	</div>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
 		crossorigin="anonymous"></script>
-	<script src="scripts/mask.js"></script>
 </h:body>
 </html>

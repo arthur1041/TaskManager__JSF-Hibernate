@@ -38,7 +38,7 @@ public class Tarefa implements Serializable{
 
 
 	@Id
-	@Column(name = "idTask")
+	@Column(name = "idTarefa")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
@@ -63,6 +63,9 @@ public class Tarefa implements Serializable{
 	
 	@Column
 	private Date dataModicicacao;
+	
+	@Column
+	private Boolean emAndamento;
 	
 	public Long getId() {
 		return id;
@@ -128,11 +131,21 @@ public class Tarefa implements Serializable{
 		this.dataModicicacao = dataModicicacao;
 	}
 
+	
+	
+	public Boolean getEmAndamento() {
+		return emAndamento;
+	}
+
+	public void setEmAndamento(Boolean emAndamento) {
+		this.emAndamento = emAndamento;
+	}
+
 	@Override
 	public String toString() {
 		return "Tarefa [id=" + id + ", titulo=" + titulo + ", descricao=" + descricao + ", usuario=" + usuario
 				+ ", nivelPrioridade=" + nivelPrioridade + ", deadline=" + deadline + ", dataCadastro=" + dataCadastro
-				+ ", dataModicicacao=" + dataModicicacao + "]";
+				+ ", dataModicicacao=" + dataModicicacao + ", emAndamento=" + emAndamento + "]";
 	}
 
 	@Override

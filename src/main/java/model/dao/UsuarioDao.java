@@ -4,6 +4,10 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import exception.ErroAoApagarException;
+import exception.ErroAoAtualizarException;
+import exception.ErroAoSalvarException;
+import exception.RegistroNaoEncontradoException;
 import model.db.DbUtil;
 import model.entity.Usuario;
 
@@ -13,9 +17,15 @@ public class UsuarioDao implements GenericDao<Usuario> {
 	
 	@Override
 	public Usuario create(Usuario usuario) {
-		entityManager.getTransaction().begin();
-		usuario = (Usuario) entityManager.merge(usuario);
-		entityManager.getTransaction().commit();
+		
+		try {
+			entityManager.getTransaction().begin();
+			usuario = (Usuario) entityManager.merge(usuario);
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			throw new ErroAoSalvarException();
+		}
+		
 		return usuario;
 	}
 
@@ -29,7 +39,7 @@ public class UsuarioDao implements GenericDao<Usuario> {
 		Usuario usuarioAtual = findById(id);
 		
 		if(usuarioAtual == null) {
-			return null;
+			throw new RegistroNaoEncontradoException();
 		}
 		
 		if(usuario.getCpf() != null)
@@ -47,9 +57,18 @@ public class UsuarioDao implements GenericDao<Usuario> {
 			usuarioAtual.setSobrenome(usuario.getSobrenome());
 		}
 		
-		entityManager.getTransaction().begin();
-		usuario = (Usuario) entityManager.merge(usuarioAtual);
-		entityManager.getTransaction().commit();
+		
+		
+		try {
+			entityManager.getTransaction().begin();
+			usuario = (Usuario) entityManager.merge(usuarioAtual);
+			entityManager.getTransaction().commit();
+		} catch(Exception e) {
+			throw new ErroAoAtualizarException();
+		}
+		
+		
+		
 		return usuario;
 	}
 
@@ -57,19 +76,30 @@ public class UsuarioDao implements GenericDao<Usuario> {
 	public void delete(Long id) {
 		Usuario usuario = new Usuario();
 		usuario.setId(id);
-		
-		entityManager.getTransaction().begin();
+				
+		try {
+			entityManager.getTransaction().begin();
 
-		if(!entityManager.contains(usuario))
-			usuario = entityManager.merge(usuario);
+			if(!entityManager.contains(usuario))
+				usuario = entityManager.merge(usuario);
+			
+			entityManager.remove(usuario);
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			throw new ErroAoApagarException();
+		}
 		
-		entityManager.remove(usuario);
-		entityManager.getTransaction().commit();
 	}
 
 	@Override
 	public Usuario findById(Long id) {
-		return entityManager.find(Usuario.class, id);
+		Usuario usuario = entityManager.find(Usuario.class, id);
+		
+		if(usuario == null) {
+			throw new RegistroNaoEncontradoException();
+		}
+		
+		return usuario;
 	}
 
 }

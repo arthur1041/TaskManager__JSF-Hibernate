@@ -37,18 +37,18 @@ public class NivelPrioridadeDaoTest {
 		}
 	}
 
-//	@Test
+	@Test
 	public void testUpdate() {
-		nivelPrioridadeDao.update(1l, new  NivelPrioridade(null, "alto"));
+		nivelPrioridadeDao.update(1000000l, new  NivelPrioridade(null, "alto"));
 	}
 
-	@Test
+//	@Test
 	public void testDelete() {
 		nivelPrioridadeDao.delete(100l);
 	}
 
 //	@Test
 	public void testFindById() {
-		System.out.println(nivelPrioridadeDao.findById(1L));
+		System.out.println(nivelPrioridadeDao.findById(100000L));
 	}
 }
